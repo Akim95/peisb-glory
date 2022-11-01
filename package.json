@@ -1,0 +1,23 @@
+{
+  "name": "autostamp-peisb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pretty": "prettier --bracket-spacing --single-quote --trailing-comma none --print-width 120 --no-semi --write '**/*.ts'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jimp": "^0.16.1",
+    "md5": "^2.3.0",
+    "moment": "^2.29.4",
+    "random-number": "^0.0.9"
+  },
+  "devDependencies": {
+    "@types/md5": "^2.3.2",
+    "@types/random-number": "^0.0.1",
+    "prettier": "^2.7.1"
+  }
+}
