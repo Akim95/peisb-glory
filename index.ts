@@ -3,46 +3,65 @@ import path from 'path'
 import jimp from 'jimp'
 import moment from 'moment'
 import rn from 'random-number'
-import md5 from 'md5'
 
-const placeName = 'Desa Lawan Kuda 2, Gopeng'
+
+let initTimestamp = moment('Oct 19, 2022 09:46:07', 'MMM D, YYYY HH:mm:ss')
+
+const scopes = ['RO3', 'R07', 'R05']
+const status = ['Sebelum', 'Selepas']
+
+const placeID = 0
+const placeRawData: any = fs.readFileSync('p20.json')
+const place = JSON.parse(placeRawData).places[placeID]
+
+const jobScope = scopes[0]
+const jobStatus = status[0]
+const zone = 'Zon C'
+const noPackage = 'KM20'
 
 async function generatePhotoTimestamp(file: string, timestamp: any) {
   console.log(timestamp)
 
-  if (path.extname(file) !== '.jpeg') {
+  const generatedDateTime = moment(timestamp, 'MMM D, YYYY HH:mm:ss')
+  const fileExt = path.extname(file)
+  const fileName = path.basename(file, fileExt)
+
+  console.log(fileExt)
+  console.log(fileName)
+
+  if (fileExt !== '.jpeg') {
     return
   }
 
-  const filename = md5(String(rn({ min: 1, max: 10000, integer: true })))
-
   const image = await jimp.read(__dirname + '/photos/' + file)
+  image.resize(1280 ,  960)
+
+  const logo = await jimp.read(__dirname + '/logo.png')
+
+  logo.resize(135, 135)
+  logo.opacity(0.9)
 
   const imageHeight = image.getHeight()
   const imageWidth = image.getWidth()
 
-  const infoBg = await jimp.create(imageWidth, imageHeight - (60 / 100) * imageHeight, 0xffffffff)
+  const blankBg = await jimp.create(imageWidth, imageHeight)
+  const infoBg = await jimp.create(imageWidth, imageHeight - (71 / 100) * imageHeight, 0xffffffff)
+
   infoBg.opacity(0.3)
 
-  image.composite(infoBg, 0, imageHeight - (35 / 100) * imageHeight)
+  infoBg.composite(logo, (infoBg.bitmap.width - logo.bitmap.width) - 45, (infoBg.bitmap.height - logo.bitmap.height) - 30)
+
+  blankBg.composite(infoBg, 0, blankBg.bitmap.height - infoBg.bitmap.height)
+  image.composite(blankBg, 0, 0)
 
   const blackF = await jimp.loadFont(jimp.FONT_SANS_32_BLACK)
-  const whiteF = await jimp.loadFont(jimp.FONT_SANS_32_WHITE)
-
-  // image.print(blackF, 11, 11, timestamp, (err, image) => {
-  //   image.print(whiteF, 10, 10, timestamp)
-  // })
-
-  // image.print(blackF, 11, 51, placeName, (err, image) => {
-  //   image.print(whiteF, 10, 50, placeName)
-  // })
 
   image.print(
     blackF,
-    10,
+    15,
     0,
     {
-      text: 'Laluan Cinta 1',
+      text: place.roads[fileName].name,
       alignmentX: jimp.HORIZONTAL_ALIGN_LEFT,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
@@ -55,12 +74,12 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
     0,
     0,
     {
-      text: 'Sebelum',
+      text: jobStatus,
       alignmentX: jimp.HORIZONTAL_ALIGN_CENTER,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
     imageWidth,
-    imageHeight - (8 / 100) * imageHeight
+    imageHeight - (6 / 100) * imageHeight
   )
 
   image.print(
@@ -68,20 +87,20 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
     0,
     0,
     {
-      text: 'R03',
+      text: jobScope,
       alignmentX: jimp.HORIZONTAL_ALIGN_CENTER,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
     imageWidth,
-    imageHeight - (3 / 100) * imageHeight
+    imageHeight - (1 / 100) * imageHeight
   )
 
   image.print(
     blackF,
-    10,
+    15,
     0,
     {
-      text: 'Taman Rindu',
+      text: place.name,
       alignmentX: jimp.HORIZONTAL_ALIGN_LEFT,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
@@ -91,10 +110,10 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
 
   image.print(
     blackF,
-    10,
+    15,
     0,
     {
-      text: '01/10/2022',
+      text: generatedDateTime.format('DD/MM/YYYY'),
       alignmentX: jimp.HORIZONTAL_ALIGN_LEFT,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
@@ -104,10 +123,10 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
 
   image.print(
     blackF,
-    10,
+    15,
     0,
     {
-      text: '10:30 PM',
+      text: generatedDateTime.format('hh:mm A'),
       alignmentX: jimp.HORIZONTAL_ALIGN_LEFT,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
@@ -117,10 +136,10 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
 
   image.print(
     blackF,
-    10,
+    15,
     0,
     {
-      text: 'ZON A / P12',
+      text: `${zone} / ${noPackage}`,
       alignmentX: jimp.HORIZONTAL_ALIGN_LEFT,
       alignmentY: jimp.VERTICAL_ALIGN_BOTTOM
     },
@@ -128,10 +147,8 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
     imageHeight - (3 / 100) * imageHeight
   )
 
-  await image.writeAsync(__dirname + `/results/${filename}.jpeg`)
+  await image.writeAsync(__dirname + `/results/${fileName}.jpeg`)
 }
-
-let initTimestamp = moment('Oct 19, 2022 09:46:07', 'MMM D, YYYY HH:mm:ss')
 
 fs.readdirSync(__dirname + '/photos').forEach(async (file) => {
   let randomAddMinutes = rn({ min: 1, max: 2, integer: true })

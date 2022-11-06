@@ -11,12 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "jimp": "^0.16.1",
-    "md5": "^2.3.0",
     "moment": "^2.29.4",
     "random-number": "^0.0.9"
   },
   "devDependencies": {
-    "@types/md5": "^2.3.2",
     "@types/random-number": "^0.0.1",
     "prettier": "^2.7.1"
   }
