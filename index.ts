@@ -4,7 +4,6 @@ import jimp from 'jimp'
 import moment from 'moment'
 import rn from 'random-number'
 
-
 let initTimestamp = moment('Oct 19, 2022 09:46:07', 'MMM D, YYYY HH:mm:ss')
 
 const scopes = ['RO3', 'R07', 'R05']
@@ -34,7 +33,7 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
   }
 
   const image = await jimp.read(__dirname + '/photos/' + file)
-  image.resize(1280 ,  960)
+  image.resize(1280, 960)
 
   const logo = await jimp.read(__dirname + '/logo.png')
 
@@ -49,7 +48,7 @@ async function generatePhotoTimestamp(file: string, timestamp: any) {
 
   infoBg.opacity(0.3)
 
-  infoBg.composite(logo, (infoBg.bitmap.width - logo.bitmap.width) - 45, (infoBg.bitmap.height - logo.bitmap.height) - 30)
+  infoBg.composite(logo, infoBg.bitmap.width - logo.bitmap.width - 45, infoBg.bitmap.height - logo.bitmap.height - 30)
 
   blankBg.composite(infoBg, 0, blankBg.bitmap.height - infoBg.bitmap.height)
   image.composite(blankBg, 0, 0)
