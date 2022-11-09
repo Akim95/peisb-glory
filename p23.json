@@ -1,0 +1,85 @@
+{
+  "places": [
+    {
+      "name": "Kopisan Baru",
+      "roads": [
+        {
+        "_id": 0,
+        "name": "J Ilmu"
+        },
+        {
+          "_id": 1,
+          "name": "J Tokong"
+        },
+        {
+          "_id": 2,
+          "name": "J Gelanggang"
+        },
+        {
+          "_id": 3,
+          "name": "J Pasar"
+        },
+        {
+          "_id": 4,
+          "name": "L Pasar"
+        },
+        {
+          "_id": 5,
+          "name": "J Bukit"
+        },
+        {
+          "_id": 6,
+          "name": "L 1"
+        },
+        {
+          "_id": 7,
+          "name": "L 2"
+        },
+        {
+          "_id": 8,
+          "name": "L Sempadan"
+        },
+        {
+          "_id": 9,
+          "name": "J Balai"
+        },
+        {
+          "_id": 10,
+          "name": "L Balai 3"
+        },
+        {
+          "_id": 11,
+          "name": "J Anggerik"
+        },
+        {
+          "_id": 12,
+          "name": "J Bunga Raya"
+        },
+        {
+          "_id": 13,
+          "name": "Susur Kekwa"
+        },
+        {
+          "_id": 14,
+          "name": "L Taman"
+        },
+        {
+          "_id": 15,
+          "name": "L Sekolah 1"
+        },
+        {
+          "_id": 17,
+          "name": "J Sekolah"
+        },
+        {
+          "_id": 17,
+          "name": "L Kolam"
+        },
+        {
+          "_id": 18,
+          "name": "L Kota Bahru"
+        }
+      ]
+    }
+  ]
+}
